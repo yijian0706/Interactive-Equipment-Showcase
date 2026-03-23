@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { Zap, Target, Activity, Cpu, ShoppingCart, BarChart3, Star, X, Check, ShieldCheck } from 'lucide-react';
+import { Zap, Target, Activity, ShoppingCart, BarChart3, Star, X, Check } from 'lucide-react';
 
 const Portfolio = () => {
   const [selectedRacket, setSelectedRacket] = useState(0);
   const [cartCount, setCartCount] = useState(0);
   const [compareList, setCompareList] = useState([]); 
-  const [showModal, setShowModal] = useState(false); // 控制对比弹窗
+  const [showModal, setShowModal] = useState(false); 
   const containerRef = useRef(null);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
@@ -46,7 +46,6 @@ const Portfolio = () => {
       {/* 顶部导航 */}
       <div style={topNav}>
         <div style={navItem}><ShoppingCart size={16} /> CART ({cartCount})</div>
-        {/* 点击这里打开弹窗 */}
         <motion.div 
           whileHover={{ scale: 1.05 }}
           onClick={() => compareList.length === 2 && setShowModal(true)}
@@ -93,9 +92,24 @@ const Portfolio = () => {
               <div style={specCard}>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
                   <button onClick={() => setCartCount(c => c + 1)} style={{ ...buyBtn, backgroundColor: current.color }}>ADD TO CART</button>
-                  <button onClick={() => toggleCompare(current.id)} style={{ ...compBtn, borderColor: compareList.includes(current.id) ? current.color : '#1e293b' }}>
-                    {compareList.includes(current.id) ? <Check size={18} color={current.color}/> : <BarChart3 size={18} />}
-                  </button>
+                  
+                  {/* --- 优化后的对比按钮 --- */}
+                  <motion.button 
+                    whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => toggleCompare(current.id)} 
+                    style={{ 
+                        ...compBtn, 
+                        borderColor: compareList.includes(current.id) ? current.color : '#1e293b',
+                        color: compareList.includes(current.id) ? current.color : '#ffffff' 
+                    }}
+                  >
+                    {compareList.includes(current.id) ? (
+                        <Check size={20} color={current.color}/> 
+                    ) : (
+                        <BarChart3 size={20} color="#ffffff" />
+                    )}
+                  </motion.button>
                 </div>
                 <StatRow label="SPEED" val={current.speed} color={current.color} icon={<Zap size={14}/>} />
                 <StatRow label="POWER" val={current.power} color={current.color} icon={<Activity size={14}/>} />
@@ -201,12 +215,25 @@ const ratingStyle = { display: 'flex', alignItems: 'center', gap: '6px', fontSiz
 
 const specCard = { padding: '35px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '28px', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' };
 const buyBtn = { flex: 1, padding: '14px', border: 'none', borderRadius: '12px', color: '#000', fontWeight: '900', fontSize: '0.8rem', cursor: 'pointer' };
-const compBtn = { width: '50px', background: 'transparent', border: '1px solid #1e293b', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' };
+
+// 这里的 compBtn 我增加了具体的高度和居中，确保点击热区完整
+const compBtn = { 
+    width: '54px', 
+    height: '54px', 
+    background: 'transparent', 
+    border: '1px solid #1e293b', 
+    borderRadius: '12px', 
+    display: 'flex', 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    cursor: 'pointer',
+    padding: 0, // 移除内边距防止干扰
+    flexShrink: 0
+};
 
 const selectorBox = { marginTop: '30px' };
 const racketBtn = { width: '100%', height: '65px', padding: '10px', borderRadius: '14px', border: '2px solid transparent', cursor: 'pointer' };
 
-// 弹窗样式
 const modalOverlay = { position: 'fixed', inset: 0, background: 'rgba(2, 6, 23, 0.95)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' };
 const modalContent = { width: '800px', background: '#0f172a', padding: '60px', borderRadius: '40px', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' };
 const closeBtn = { position: 'absolute', top: '30px', right: '30px', background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' };
