@@ -22,12 +22,16 @@ const Portfolio = () => {
   const panelOpacity = useTransform(smoothScroll, [0.65, 0.8, 0.85, 0.9], [0, 1, 1, 0]);
   const panelX = useTransform(smoothScroll, [0.65, 0.8], ["30px", "0px"]);
 
+  // --- 背景图专属动画 ---
+  const heroBgOpacity = useTransform(smoothScroll, [0, 0.12], [0.5, 0]); // 初始透明度 0.5
+  const heroBgScale = useTransform(smoothScroll, [0, 0.12], [1.1, 1]); // 滚动时轻微收缩
+
   const rackets = [
-    { id: 0, name: "ASTROX 100ZZ", color: "#38bdf8", price: "RM 949", rating: 4.9, bestFor: "POWER SMASH", speed: 85, power: 98, control: 92, flex: "Extra Stiff", frame: "HM Graphite / Namd", shaft: "6.2mm Hyper Slim", img: "https://triplepointsports.com/cdn/shop/products/3170298515.png?v=1669726018" },
-    { id: 1, name: "NANOFLARE 1000Z", color: "#facc15", price: "RM 899", rating: 4.8, bestFor: "LIGHTNING SPEED", speed: 99, power: 82, control: 88, flex: "Stiff", frame: "HM Graphite / M40X", shaft: "Ultra PE Fiber", img: "https://e78shop.com/cdn/shop/files/nanoflare_1000_z.webp?v=1686605505" },
-    { id: 2, name: "NANOFLARE 001 FEEL", color: "#15fac1", price: "RM 259", rating: 4.5, bestFor: "CONTROL & TOUCH", speed: 92, power: 75, control: 95, flex: "Flexible", frame: "HM Graphite", shaft: "Slim Shaft", img: "https://oregonbadminton.com/cdn/shop/files/int_nf-001f_551-1_02_1_1024x1024@2x.webp?v=1732845648" },
-    { id: 3, name: "001 ABILITY FLASH", color: "#fa1515", price: "RM 269", rating: 4.6, bestFor: "ALL-AROUND PLAY", speed: 95, power: 82, control: 88, flex: "Medium", frame: "HM Graphite", shaft: "Slim Shaft", img: "https://oregonbadminton.com/cdn/shop/files/nf-001a_flash-red_1024x1024@2x.webp?v=1706049069" },
-    { id: 4, name: "NANOFLARE 700", color: "#6a2300", price: "RM 799", rating: 4.7, bestFor: "DRIVE & DEFENSE", speed: 93, power: 85, control: 90, flex: "Stiff", frame: "HM Graphite", shaft: "Super Slim", img: "https://oregonbadminton.com/cdn/shop/files/700midnightpurple_1024x1024@2x.webp?v=1726268454" }
+    { id: 0, name: "ASTROX 100ZZ", color: "#38bdf8", price: "RM 949", rating: 4.9, bestFor: "POWER SMASH", speed: 85, power: 98, control: 92, flex: "Extra Stiff", frame: "HM Graphite / Namd", shaft: "6.2mm Hyper Slim", weight: "4U (Avg. 83g)", tech: "Rotational Generator System", img: "https://triplepointsports.com/cdn/shop/products/3170298515.png?v=1669726018" },
+    { id: 1, name: "NANOFLARE 1000Z", color: "#facc15", price: "RM 899", rating: 4.8, bestFor: "LIGHTNING SPEED", speed: 99, power: 82, control: 88, flex: "Stiff", frame: "HM Graphite / M40X", shaft: "Ultra PE Fiber", weight: "3U (Avg. 88g)", tech: "AERO-COMPACT Frame", img: "https://e78shop.com/cdn/shop/files/nanoflare_1000_z.webp?v=1686605505" },
+    { id: 2, name: "NANOFLARE 001 FEEL", color: "#15fac1", price: "RM 259", rating: 4.5, bestFor: "CONTROL & TOUCH", speed: 92, power: 75, control: 95, flex: "Flexible", frame: "HM Graphite", shaft: "Slim Shaft", weight: "5U (Avg. 78g)", tech: "Sonic Flare System", img: "https://oregonbadminton.com/cdn/shop/files/int_nf-001f_551-1_02_1_1024x1024@2x.webp?v=1732845648" },
+    { id: 3, name: "001 ABILITY FLASH", color: "#fa1515", price: "RM 269", rating: 4.6, bestFor: "ALL-AROUND PLAY", speed: 95, power: 82, control: 88, flex: "Medium", frame: "HM Graphite", shaft: "Slim Shaft", weight: "4U (Avg. 83g)", tech: "Isometric Head Shape", img: "https://oregonbadminton.com/cdn/shop/files/nf-001a_flash-red_1024x1024@2x.webp?v=1706049069" },
+    { id: 4, name: "NANOFLARE 700", color: "#6a2300", price: "RM 799", rating: 4.7, bestFor: "DRIVE & DEFENSE", speed: 93, power: 85, control: 90, flex: "Stiff", frame: "HM Graphite", shaft: "Super Slim", weight: "4U / 5U Options", tech: "Torayca M40X", img: "https://oregonbadminton.com/cdn/shop/files/700midnightpurple_1024x1024@2x.webp?v=1726268454" }
   ];
 
   const current = rackets[selectedRacket];
@@ -56,6 +60,15 @@ const Portfolio = () => {
         </motion.div>
       </div>
 
+      {/* --- 背景层 --- */}
+      <motion.div 
+        style={{
+          ...heroBackgroundImage,
+          opacity: heroBgOpacity,
+          scale: heroBgScale,
+          backgroundImage: `url('https://images.unsplash.com/photo-1521537634581-0dced2fee2ef?q=80&w=2070&auto=format&fit=crop')`, // 这里替换你的背景图
+        }}
+      />
       <motion.div animate={{ background: `radial-gradient(circle at 50% 50%, ${current.color}15 0%, #020617 80%)` }} style={ambientBg} />
 
       <div style={fixedStage}>
@@ -63,10 +76,12 @@ const Portfolio = () => {
           <h1 style={bigTitle}>SUPREME PERFORMANCE</h1>
         </motion.div>
 
-        {/* 指示线 */}
+        {/* --- 指示线 --- */}
         <motion.div style={{ ...calloutContainer, opacity: calloutOpacity }}>
-          <CalloutItem side="left" top="20%" label="FRAME" text={current.frame} lineDraw={lineDraw} color={current.color} />
-          <CalloutItem side="right" top="55%" label="SHAFT" text={current.shaft} lineDraw={lineDraw} color={current.color} />
+          <CalloutItem side="left" top="25%" label="FRAME" text={current.frame} lineDraw={lineDraw} color={current.color} />
+          <CalloutItem side="left" top="65%" label="WEIGHT" text={current.weight} lineDraw={lineDraw} color={current.color} />
+          <CalloutItem side="right" top="35%" label="SHAFT" text={current.shaft} lineDraw={lineDraw} color={current.color} />
+          <CalloutItem side="right" top="75%" label="TECH" text={current.tech} lineDraw={lineDraw} color={current.color} />
         </motion.div>
 
         {/* 球拍区 */}
@@ -92,8 +107,6 @@ const Portfolio = () => {
               <div style={specCard}>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '25px' }}>
                   <button onClick={() => setCartCount(c => c + 1)} style={{ ...buyBtn, backgroundColor: current.color }}>ADD TO CART</button>
-                  
-                  {/* --- 优化后的对比按钮 --- */}
                   <motion.button 
                     whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
                     whileTap={{ scale: 0.9 }}
@@ -104,11 +117,7 @@ const Portfolio = () => {
                         color: compareList.includes(current.id) ? current.color : '#ffffff' 
                     }}
                   >
-                    {compareList.includes(current.id) ? (
-                        <Check size={20} color={current.color}/> 
-                    ) : (
-                        <BarChart3 size={20} color="#ffffff" />
-                    )}
+                    {compareList.includes(current.id) ? <Check size={20} color={current.color}/> : <BarChart3 size={20} color="#ffffff" />}
                   </motion.button>
                 </div>
                 <StatRow label="SPEED" val={current.speed} color={current.color} icon={<Zap size={14}/>} />
@@ -130,14 +139,13 @@ const Portfolio = () => {
         </motion.div>
       </div>
 
-      {/* --- 对比弹窗 (Comparison Modal) --- */}
+      {/* 对比弹窗 */}
       <AnimatePresence>
         {showModal && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={modalOverlay}>
             <motion.div initial={{ y: 50, scale: 0.9 }} animate={{ y: 0, scale: 1 }} style={modalContent}>
               <button onClick={() => setShowModal(false)} style={closeBtn}><X /></button>
               <h2 style={{ textAlign: 'center', marginBottom: '40px', letterSpacing: '4px' }}>EQUIPMENT COMPARISON</h2>
-              
               <div style={{ display: 'flex', justifyContent: 'space-around', gap: '20px' }}>
                 {compareList.map(id => (
                   <div key={id} style={{ flex: 1, textAlign: 'center', padding: '20px', background: 'rgba(255,255,255,0.03)', borderRadius: '20px' }}>
@@ -161,7 +169,7 @@ const Portfolio = () => {
   );
 };
 
-// --- 子组件 (StatRow, Callout, Model) ---
+// --- 子组件 ---
 const StatRow = ({ label, val, color, icon }) => (
   <div style={{ marginBottom: '18px' }}>
     <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.7rem', marginBottom: '6px' }}>
@@ -194,46 +202,39 @@ const RacketModel = ({ img, color }) => (
 );
 
 // --- 样式定义 ---
+const heroBackgroundImage = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100vh',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  zIndex: 0,
+  filter: 'brightness(0.35) contrast(1.1)', // 调暗背景，突出文字
+  pointerEvents: 'none'
+};
+
 const topNav = { position: 'fixed', top: '30px', right: '40px', display: 'flex', gap: '20px', zIndex: 1000 };
 const navItem = { padding: '8px 16px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid #1e293b', borderRadius: '20px', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 'bold' };
 const pulseDot = { width: '6px', height: '6px', backgroundColor: '#38bdf8', borderRadius: '50%', boxShadow: '0 0 10px #38bdf8' };
-
 const fixedStage = { position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', overflow: 'hidden', zIndex: 10 };
 const ambientBg = { position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', zIndex: 1 };
 const introBox = { position: 'absolute', top: '50%', left: '50%', x: '-50%', y: '-50%', textAlign: 'center', zIndex: 100, width: '100vw' };
-const bigTitle = { fontSize: '4.8vw', fontWeight: '900', margin: 0, whiteSpace: 'nowrap', letterSpacing: '-1px', textTransform: 'uppercase' };
-
+const bigTitle = { fontSize: '4.8vw', fontWeight: '900', margin: 0, whiteSpace: 'nowrap', letterSpacing: '-1px', textTransform: 'uppercase', textShadow: '0 10px 30px rgba(0,0,0,0.5)' };
 const calloutContainer = { position: 'absolute', width: '100%', height: '100%', zIndex: 50, pointerEvents: 'none' };
 const racketFixedContainer = { position: 'fixed', top: '50%', y: '-50%', x: '-50%', zIndex: 20, display: 'flex', flexDirection: 'column', alignItems: 'center' };
 const glowDisk = { width: '140px', height: '12px', borderRadius: '50%', filter: 'blur(20px)', opacity: 0.3, marginTop: '20px' };
-
 const rightPanelContainer = { position: 'absolute', top: '50%', y: '-50%', right: '10%', width: '440px', zIndex: 60 };
 const racketName = { fontSize: '3rem', fontWeight: '900', margin: 0, letterSpacing: '-1px' };
 const priceText = { fontSize: '1.8rem', fontWeight: '900', opacity: 0.5, marginBottom: '15px', fontFamily: 'monospace' };
 const tagStyle = { padding: '4px 12px', border: '1px solid', borderRadius: '4px', fontSize: '0.6rem', fontWeight: '900' };
 const ratingStyle = { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.9rem', fontWeight: 'bold' };
-
 const specCard = { padding: '35px', background: 'rgba(15, 23, 42, 0.85)', borderRadius: '28px', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(20px)' };
 const buyBtn = { flex: 1, padding: '14px', border: 'none', borderRadius: '12px', color: '#000', fontWeight: '900', fontSize: '0.8rem', cursor: 'pointer' };
-
-// 这里的 compBtn 我增加了具体的高度和居中，确保点击热区完整
-const compBtn = { 
-    width: '54px', 
-    height: '54px', 
-    background: 'transparent', 
-    border: '1px solid #1e293b', 
-    borderRadius: '12px', 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'center', 
-    cursor: 'pointer',
-    padding: 0, // 移除内边距防止干扰
-    flexShrink: 0
-};
-
+const compBtn = { width: '54px', height: '54px', background: 'transparent', border: '1px solid #1e293b', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 0, flexShrink: 0 };
 const selectorBox = { marginTop: '30px' };
 const racketBtn = { width: '100%', height: '65px', padding: '10px', borderRadius: '14px', border: '2px solid transparent', cursor: 'pointer' };
-
 const modalOverlay = { position: 'fixed', inset: 0, background: 'rgba(2, 6, 23, 0.95)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(10px)' };
 const modalContent = { width: '800px', background: '#0f172a', padding: '60px', borderRadius: '40px', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' };
 const closeBtn = { position: 'absolute', top: '30px', right: '30px', background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer' };
